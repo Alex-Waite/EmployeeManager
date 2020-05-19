@@ -2,6 +2,7 @@
 const util = require("util");
 const mysql = require("mysql");
 const inquirer = require("inquirer")
+const table = require("console.table")
 
 
 // Create a connection to the database
@@ -12,5 +13,8 @@ const connection = mysql.createConnection({
     database: 'employees_db'
 });
 
-connection.connect();
+connection.connect(function (error) {
+    if (error) throw error;
+    else console.log("connected as id " + connection.threadId)
+});
 connection.query = util.promisify(connection.query);
