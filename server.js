@@ -64,9 +64,7 @@ appStarter = async function () {
                 const employees = await connection.query("SELECT * FROM employee;")
                 console.table(employees)
 
-            } else if (selectedView.whatToView === "Go-Back") {
-
-            }
+            } else if (selectedView.whatToView === "Go-Back") {}
 
 
         } else if (selectedTask.whatTask === "Add") {
@@ -119,10 +117,32 @@ appStarter = async function () {
                 console.table(Checker)
 
             } else if (selectedAdd.whatToAdd === "Employees") {
+                function newEmployee() {
+                    return inquirer.prompt([{
+                        name: "newEmployeeFirstName",
+                        type: "input",
+                        message: "What is the first name of the new Employee?"
+                    }, {
+                        name: "newEmployeeLastName",
+                        type: "input",
+                        message: "What is the last name of the new Employee?"
+                    }, {
+                        name: "newEmployeeRole",
+                        type: "input",
+                        message: "What is the role ID of this Employee?"
+                    }, {
+                        name: "newEmployeeManagerId",
+                        type: "input",
+                        message: `What is this Employee's Manager ID? (if non-applicable write "NULL")`
+                    }])
+                }
+                const waitNewEmployee = await newEmployee()
+                const injectNewEmployee = connection.query(`INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES ("${waitNewEmployee.newEmployeeFirstName}", "${waitNewEmployee.newEmployeeLastName}", ${waitNewEmployee.newEmployeeRole}, ${waitNewEmployee.newEmployeeManagerId});`)
+                injectNewEmployee
+                let Checker = await connection.query(`SELECT * FROM employee;`)
+                console.table(Checker)
 
-            } else if (selectedAdd.whatToAdd === "Go-Back") {
-
-            }
+            } else if (selectedAdd.whatToAdd === "Go-Back") {}
 
 
         } else if (selectedTask.whatTask === "Update employee roles") {
