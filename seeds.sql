@@ -1,4 +1,4 @@
-USE employees2_db;
+USE employees4_db;
 
 
 INSERT INTO department(name)
@@ -46,3 +46,4 @@ VALUES ("Mark", "Evans", 5, NULL);
 
 SELECT * FROM employee;
 
+SELECT employee.first_name, employee.last_name, role.title FROM employee INNER JOIN role ON employee.role_id = role.id;

@@ -10,8 +10,9 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'Killer88',
-    database: 'employees2_db'
+    database: 'employees4_db'
 });
+
 connection.query = util.promisify(connection.query);
 connect = util.promisify(connection.connect);
 
@@ -41,7 +42,6 @@ appStarter = async function () {
 
         if (selectedTask.whatTask === "View") {
             // Viewing existing data path
-            console.log("View pathing all g")
 
             function viewWhat() {
                 return inquirer.prompt({
@@ -69,7 +69,7 @@ appStarter = async function () {
 
         } else if (selectedTask.whatTask === "Add") {
             // Adding new data path
-            console.log("Add pathing all g")
+
 
             function addWhat() {
                 return inquirer.prompt({
@@ -147,7 +147,61 @@ appStarter = async function () {
 
         } else if (selectedTask.whatTask === "Update employee roles") {
             // Updating existing data path
-            console.log("Update pathing all g")
+
+            // NOT NECECARY FOR TASK HOWEVER COME BACK TO THIS LAST
+
+            // function updateWhat() {
+            //     return inquirer.prompt({
+            //         name: "updateSpecific",
+            //         type: "list",
+            //         message: "Update what?",
+            //         choices: ["Departments", "Roles", "Employees"]
+            //     })
+            // }
+            // const toUpdate = await updateWhat()
+            // if (toUpdate.updateSpecific === "Departments") {
+            //     function updateDept() {
+            //         return inquirer.prompt([{
+            //             name: "updatedName",
+            //             type: "input",
+            //             message: "What is the name of the department you would like to edit? (Case sensitive!)"
+            //         }, {
+            //             name: "deptNewName",
+            //             type: "input",
+            //             message: "What would you like this department's new name to be?"
+            //         }])
+            //     }
+            //     const waitDeptUpdate = await updateDept()
+            //     const injectUpdate = connection.query(`UPDATE department SET name = "${waitDeptUpdate.deptNewName}" WHERE department.name = "${waitDeptUpdate.updaterName}"`)
+            //     injectUpdate
+            //     let Checker = connection.query(`SELECT * FROM department`)
+            //     console.table(Checker)
+            // } else if (toUpdate.updateSpecific === "Roles") {
+
+            // } else if (toUpdate.updateSpecific === "Employees") {
+
+            // }
+
+            function updateEmployee() {
+                return inquirer.prompt([{
+                    name: "updateFirstName",
+                    type: "input",
+                    message: "What is this employee's first name? (Case sensitive!)",
+                }, {
+                    name: "updateLastName",
+                    type: "input",
+                    message: "What is this employee's last name? (Case sensitive!)",
+                }, {
+                    name: "updateNewRole",
+                    type: "input",
+                    message: "What is this employee's new role ID? (Number!)",
+                }])
+            }
+            const waitUpdater = await updateEmployee()
+            const updateInject = connection.query(`UPDATE employee SET employee.role_id = ${waitUpdater.updateNewRole} WHERE employee.first_name = '${waitUpdater.updateFirstName}' AND employee.last_name = '${waitUpdater.updateLastName}';`)
+            await updateInject
+            const UpdatedCheck = await connection.query(`SELECT * FROM employee WHERE employee.first_name = '${waitUpdater.updateFirstName}' AND employee.last_name = '${waitUpdater.updateLastName}';`)
+            console.table(UpdatedCheck)
 
         } else if (selectedTask.whatTask === "Exit") {
             // Exit path
